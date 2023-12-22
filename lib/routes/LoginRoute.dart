@@ -19,7 +19,22 @@ class _LoginState extends State<LoginRoute> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
-          color: Colors.lightBlueAccent,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  stops: [
+                0.1,
+                0.9,
+                0.9,
+                1
+              ],
+                  colors: [
+                Colors.white,
+                Color(0x6084FFFF),
+                Color(0x6084FFFF),
+                Colors.white
+              ])),
           child: Column(
             children: [
               Expanded(flex: 40, child: Container()),
@@ -78,8 +93,8 @@ class _LoginState extends State<LoginRoute> {
                               alignment: Alignment.topRight,
                               child: Text('Forgot Password?',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.white))),
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF00B8D4)))),
                           const SizedBox(height: 30),
                           SizedBox(
                             width: double.infinity,
@@ -88,7 +103,7 @@ class _LoginState extends State<LoginRoute> {
                               style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(2.0)),
-                                  backgroundColor: Colors.red),
+                                  backgroundColor: Color(0xFF4FC3F7)),
                               child: const Text(
                                 'Login',
                                 style: TextStyle(

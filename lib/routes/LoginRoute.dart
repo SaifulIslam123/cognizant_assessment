@@ -1,4 +1,6 @@
+import 'package:cognizant_assessment/routes/ContactsRoute.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class LoginRoute extends StatefulWidget {
   const LoginRoute({super.key});
@@ -19,7 +21,7 @@ class _LoginState extends State<LoginRoute> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topRight,
                   end: Alignment.bottomLeft,
@@ -109,7 +111,9 @@ class _LoginState extends State<LoginRoute> {
                                 style: TextStyle(
                                     fontSize: 18, color: Colors.white),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.to(ContactsRoute());
+                              },
                             ),
                           )
                         ],

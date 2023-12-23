@@ -1,14 +1,36 @@
 import 'package:flutter/material.dart';
 
-class ContactsRoute extends StatelessWidget {
+class ContactsRoute extends StatefulWidget {
   const ContactsRoute({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _ContactsRoute();
+}
+
+class _ContactsRoute extends State<ContactsRoute> {
+  TextEditingController editingController = TextEditingController();
+
+  final List<String> entries = <String>['Samir', 'Karima', 'Adil', 'aadil','Saiful','khalid','jon dow','rubel'];
+  var contactItems = <String>[];
+
+  @override
+  void initState() {
+    entries.sort((a, b) => a.toUpperCase().compareTo(b.toUpperCase()));
+    contactItems = entries;
+    super.initState();
+  }
+
+  void filterSearchResults(String query) {
+    setState(() {
+      contactItems = entries
+          .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final List<String> entries = <String>['Samir', 'Karima', 'Adil', 'aadil'];
-    entries.sort((a, b) => a.toUpperCase().compareTo(b.toUpperCase()));
-
     return SafeArea(
         child: Scaffold(
       body: Container(
@@ -19,17 +41,36 @@ class ContactsRoute extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Contacts',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                  fontSize: 22),
+            Padding(
+              padding: const EdgeInsets.only(top: 16,bottom: 16),
+              child: TextField(
+                onChanged: (value) {
+                  filterSearchResults(value);
+                },
+                controller: editingController,
+                decoration: const InputDecoration(
+                    labelText: "Search",
+                    hintText: "Search",
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(16.0)))),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Text(
+                'Contacts',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                    fontSize: 22),
+              ),
             ),
             const SizedBox(height: 16),
             Expanded(
                 child: ListView.builder(
-                    itemCount: entries.length,
+                  shrinkWrap: true,
+                    itemCount: contactItems.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Card(
                         child: Row(
@@ -53,7 +94,7 @@ class ContactsRoute extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      entries[index],
+                                      contactItems[index],
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(

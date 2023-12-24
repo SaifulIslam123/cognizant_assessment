@@ -1,58 +1,51 @@
 import 'package:cognizant_assessment/model/Contact.dart';
-import 'package:cognizant_assessment/network/Result.dart' as result;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/DataBloc.dart';
+import '../bloc/ContactsBloc.dart';
 
-/*
-class ContactsRoute extends StatefulWidget {
-  const ContactsRoute({super.key});
-
+class ContactsRoute extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() => _ContactsRoute();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<ContactsBloc>(
+            create: (context) => ContactsBloc(),
+          )
+        ],
+        child: ContactWidget(),
+      ),
+    );
+  }
 }
 
-class _ContactsRoute extends State<ContactsRoute> {
-  TextEditingController editingController = TextEditingController();
-
-  final List<String> entries = <String>['Samir', 'Karima', 'Adil', 'aadil','Saiful','khalid','jon dow','rubel'];
-  var contactItems = <String>[];
-
-  @override
-  void initState() {
-    entries.sort((a, b) => a.toUpperCase().compareTo(b.toUpperCase()));
-    contactItems = entries;
-    super.initState();
-  }
-
-  void filterSearchResults(String query) {
-    setState(() {
-      contactItems = entries
-          .where((item) => item.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-    });
-  }
+class ContactWidget extends StatelessWidget {
+  var contactItems = <Data>[];
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    return SafeArea(
-        child: Scaffold(
-      body: Container(
+    final contactBloc = BlocProvider.of<ContactsBloc>(context);
+
+    if (contactItems.isEmpty) contactBloc.add(FetchContactsEvent());
+
+    print("widgetbuild");
+    return Scaffold(
+        body: SafeArea(
+      child: Container(
         height: mediaQuery.size.height,
         width: mediaQuery.size.width,
         color: const Color(0xFFEFEBE9),
         padding: const EdgeInsets.all(20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 16,bottom: 16),
+              padding: const EdgeInsets.only(top: 16, bottom: 16),
               child: TextField(
                 onChanged: (value) {
-                  filterSearchResults(value);
+                  contactBloc.add(SearchTextChangedEvent(value));
                 },
-                controller: editingController,
+                // controller: editingController,
                 decoration: const InputDecoration(
                     labelText: "Search",
                     hintText: "Search",
@@ -72,108 +65,91 @@ class _ContactsRoute extends State<ContactsRoute> {
               ),
             ),
             const SizedBox(height: 16),
-            Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                    itemCount: contactItems.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Card(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.all(16),
-                              width: 50,
-                              height: 50,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  color: Colors.cyan),
-                              child: const Text('B'),
-                            ),
-                            Expanded(
-                              child: Container(
-                                margin: const EdgeInsets.only(
-                                    left: 2, right: 16, top: 16, bottom: 16),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      contactItems[index],
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      'test@gmail.com',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Colors.black38,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    }))
+            BlocBuilder<ContactsBloc, ContactsState>(
+              builder: (context, state) {
+                if (state is LoadingContactsState) {
+                  return const Center(child: Text('Loading...'));
+                } else if (state is LoadedContactsState) {
+                  if (state.searchContactList.isNotEmpty) {
+                    contactItems = state.searchContactList;
+                  } else {
+                    contactItems = state.contactList;
+                  }
+                  return _showContactListWidget(context);
+                } else if (state is ErrorContactsState) {
+                  return Center(child: Text('${state.error}'));
+                } else {
+                  return const Text('');
+                }
+              },
+            ),
           ],
         ),
       ),
     ));
   }
-}
-*/
 
-class ContactsRoute extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: BlocProvider(
-        create: (context) => DataBloc(),
-        child: ContactWidget(),
-      ),
-    );
+  Widget _showContactListWidget(BuildContext context) {
+    // final mediaQuery = MediaQuery.of(context);
+    return Expanded(
+        child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: contactItems.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Card(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.all(16),
+                      width: 50,
+                      height: 50,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.cyan),
+                      child: const Text('B'),
+                    ),
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.only(
+                            left: 2, right: 16, top: 16, bottom: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              contactItems[index].name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              contactItems[index].email,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  color: Colors.black38,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }));
   }
 }
 
-class ContactWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final dataBloc = BlocProvider.of<DataBloc>(context).add(FetchDataEvent());
-    return Scaffold(
-      body: Center(
-        child: BlocBuilder<DataBloc, DataState>(
-          builder: (context, state) {
-            if (state is InitialDataState) {
-              return const Text('Loading...');
-            } else if (state is LoadedDataState) {
-              Contact contact = (state.data as result.Result).data as Contact;
-              contact.data?.forEach((element) {
-                print("${element.name} \n");
-              });
-              return Text('Data: ${contact.data?.length}');
-            } else if (state is ErrorDataState) {
-              return Text('${state.error}');
-            } else {
-              return const Text('');
-            }
-          },
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // dataBloc.add(FetchDataEvent());
-        },
-        child: Icon(Icons.refresh),
-      ),
-    );
-  }
-}
+/*
+BlocBuilder<TextBloc, TextState>(builder: (context, state) {
+if(state is TextUpdatedState){
+contactItems = totalContactItems
+    .where((item) => item.name.toLowerCase().contains(state.newText.toLowerCase()))
+    .toList();
+}*/

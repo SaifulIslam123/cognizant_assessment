@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
+const String BASE_URL = "https://cognizantv2.free.beeceptor.com";
+
 enum HttpMethod { POST, GET, PUT, DELETE, PATCH }
 
 class AppApiClient {
@@ -13,7 +15,7 @@ class AppApiClient {
   factory AppApiClient() => _singleton;
 
   static Dio createDio() {
-    var dio = Dio(BaseOptions(baseUrl: "https://cognizant.free.beeceptor.com"));
+    var dio = Dio(BaseOptions(baseUrl: BASE_URL));
     return dio;
   }
 
@@ -22,5 +24,4 @@ class AppApiClient {
       print(msg);
     }
   }
-
 }

@@ -84,33 +84,27 @@ class Status {
 }
 
 class Data {
-  String? _id;
-  String? _name;
-  String? _email;
+  String _id = "";
+  String _name = "";
+  String _email = "";
 
-  Data({String? id, String? name, String? email}) {
-    if (id != null) {
-      this._id = id;
-    }
-    if (name != null) {
-      this._name = name;
-    }
-    if (email != null) {
-      this._email = email;
-    }
+  Data({required String id, required String name, required String email}) {
+    this._id = id;
+    this._name = name;
+    this._email = email;
   }
 
-  String? get id => _id;
+  String get id => _id;
 
-  set id(String? id) => _id = id;
+  set id(String id) => _id = id;
 
-  String? get name => _name;
+  String get name => _name;
 
-  set name(String? name) => _name = name;
+  set name(String name) => _name = name;
 
-  String? get email => _email;
+  String get email => _email;
 
-  set email(String? email) => _email = email;
+  set email(String email) => _email = email;
 
   Data.fromJson(Map<String, dynamic> json) {
     _id = json['id'];

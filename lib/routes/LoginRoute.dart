@@ -114,8 +114,8 @@ class _LoginState extends State<LoginRoute> {
                                     fontSize: 18, color: Colors.white),
                               ),
                               onPressed: () {
-                                Get.to(MyHomePage(title: '',));
-                               // Get.to(ContactsRoute());
+                               // Get.to(MyHomePage(title: '',));
+                                Get.to(ContactsRoute());
                               },
                             ),
                           )

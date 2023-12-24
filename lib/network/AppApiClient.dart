@@ -13,7 +13,7 @@ class AppApiClient {
   factory AppApiClient() => _singleton;
 
   static Dio createDio() {
-    var dio = Dio(BaseOptions(baseUrl: "BASE_URL"));
+    var dio = Dio(BaseOptions(baseUrl: "https://cognizant.free.beeceptor.com"));
     return dio;
   }
 

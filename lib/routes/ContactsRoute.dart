@@ -1,5 +1,10 @@
+import 'package:cognizant_assessment/model/Contact.dart';
+import 'package:cognizant_assessment/network/Result.dart' as result;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../bloc/DataBloc.dart';
 
+/*
 class ContactsRoute extends StatefulWidget {
   const ContactsRoute({super.key});
 
@@ -123,5 +128,52 @@ class _ContactsRoute extends State<ContactsRoute> {
         ),
       ),
     ));
+  }
+}
+*/
+
+class ContactsRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: BlocProvider(
+        create: (context) => DataBloc(),
+        child: ContactWidget(),
+      ),
+    );
+  }
+}
+
+class ContactWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final dataBloc = BlocProvider.of<DataBloc>(context).add(FetchDataEvent());
+    return Scaffold(
+      body: Center(
+        child: BlocBuilder<DataBloc, DataState>(
+          builder: (context, state) {
+            if (state is InitialDataState) {
+              return const Text('Loading...');
+            } else if (state is LoadedDataState) {
+              Contact contact = (state.data as result.Result).data as Contact;
+              contact.data?.forEach((element) {
+                print("${element.name} \n");
+              });
+              return Text('Data: ${contact.data?.length}');
+            } else if (state is ErrorDataState) {
+              return Text('${state.error}');
+            } else {
+              return const Text('');
+            }
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // dataBloc.add(FetchDataEvent());
+        },
+        child: Icon(Icons.refresh),
+      ),
+    );
   }
 }

@@ -54,14 +54,17 @@ class ContactWidget extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(16.0)))),
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(top: 20),
-              child: Text(
-                'Contacts',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                    fontSize: 22),
+              child: Container(
+                alignment: Alignment.topLeft,
+                child: const Text(
+                  'Contacts',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                      fontSize: 22),
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -90,7 +93,6 @@ class ContactWidget extends StatelessWidget {
   }
 
   Widget _showContactListWidget(BuildContext context) {
-    // final mediaQuery = MediaQuery.of(context);
     return Expanded(
         child: ListView.builder(
             shrinkWrap: true,
@@ -107,8 +109,12 @@ class ContactWidget extends StatelessWidget {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
-                          color: Colors.cyan),
-                      child: const Text('B'),
+                          color: Colors.pinkAccent),
+                      child: Text(
+                        contactItems[index].name.substring(0, 2).toUpperCase(),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
                     ),
                     Expanded(
                       child: Container(

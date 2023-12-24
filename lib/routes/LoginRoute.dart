@@ -114,7 +114,7 @@ class _LoginState extends State<LoginRoute> {
                                     fontSize: 18, color: Colors.white),
                               ),
                               onPressed: () {
-                                Get.to(ContactsRoute());
+                                Get.to(CircularChartRoute());
                               },
                             ),
                           )

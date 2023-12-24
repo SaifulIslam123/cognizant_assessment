@@ -1,3 +1,4 @@
+import 'package:cognizant_assessment/model/ProspectStatus.dart';
 import 'package:flutter/material.dart';
 import 'package:circular_chart_flutter/circular_chart_flutter.dart';
 
@@ -9,9 +10,9 @@ class CircularChartRoute extends StatefulWidget {
 }
 
 class _CircularChart extends State<CircularChartRoute> {
-  final String _hot = 'Hot';
-  final String _warm = 'Warm';
-  final String _cold = 'Cold ';
+  final _hot = ProspectStatus('Hot', 35, '25%');
+  final _warm = ProspectStatus('Warm', 35, '25%');
+  final _cold = ProspectStatus('Cold', 90, '50%');
 
   final MaterialAccentColor _hotColor = Colors.redAccent;
   final MaterialAccentColor _warmColor = Colors.orangeAccent;
@@ -20,8 +21,15 @@ class _CircularChart extends State<CircularChartRoute> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Container(
-        color: const Color(0xFFEFEBE9),
+      child: _createCircularPieChart(),
+    );
+  }
+
+  Widget _createCircularPieChart() {
+    return Container(
+      color: const Color(0xFFEFEBE9),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Align(
           alignment: Alignment.topLeft,
           child: SizedBox(
@@ -47,38 +55,40 @@ class _CircularChart extends State<CircularChartRoute> {
                       children: [
                         Expanded(
                             flex: 50,
-                            child: Stack(
-                              children: [
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: _circularPieChart(),
-                                ),
-                                const Positioned(
-                                    top: 0,
-                                    bottom: 0,
-                                    left: 0,
-                                    right: 0,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          '160',
-                                          style: TextStyle(
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black87),
-                                        ),
-                                        Text('Total Prospects',
+                            child: Container(
+                              margin: const EdgeInsets.only(left: 16),
+                              child: Stack(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: _circularPieChart(),
+                                  ),
+                                  const Positioned(
+                                      top: 0,
+                                      bottom: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            '160',
                                             style: TextStyle(
-                                                fontSize: 14,
+                                                fontSize: 22,
                                                 fontWeight: FontWeight.bold,
-                                                color: Color(0xFF607D8B)))
-                                      ],
-                                    ))
-                              ],
+                                                color: Colors.black87),
+                                          ),
+                                          Text('Total Prospects',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xFF607D8B)))
+                                        ],
+                                      ))
+                                ],
+                              ),
                             )),
                         Expanded(
                             flex: 60,
@@ -86,10 +96,8 @@ class _CircularChart extends State<CircularChartRoute> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: Row(
-                                    children: [_colorTextColumn()],
-                                  ),
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: _colorTextColumn(),
                                 ),
                               ],
                             ))
@@ -115,19 +123,19 @@ class _CircularChart extends State<CircularChartRoute> {
           CircularStackEntry(
             <CircularSegmentEntry>[
               CircularSegmentEntry(
-                35,
+                _hot.count,
                 _hotColor,
-                rankKey: _hot,
+                rankKey: _hot.type,
               ),
               CircularSegmentEntry(
-                35,
+                _warm.count,
                 _warmColor,
-                rankKey: _warm,
+                rankKey: _warm.type,
               ),
               CircularSegmentEntry(
-                90,
+                _cold.count,
                 _coldColor,
-                rankKey: _cold,
+                rankKey: _cold.type,
               ),
             ],
             rankKey: 'progress',
@@ -140,40 +148,48 @@ class _CircularChart extends State<CircularChartRoute> {
   Widget _colorTextColumn() {
     return Column(
       children: [
-        Row(
-          children: [colorCircleShape(_hot, _hotColor)],
-        ),
+        colorCircleShape(_hot, _hotColor),
         colorCircleShape(_warm, _warmColor),
         colorCircleShape(_cold, _coldColor)
       ],
     );
   }
 
-  Widget colorCircleShape(String type, MaterialAccentColor color) {
+  Widget colorCircleShape(ProspectStatus status, MaterialAccentColor color) {
     return Row(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 16.0,
-              height: 16.0,
+              width: 12.0,
+              height: 12.0,
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: color // Color of the circular shape
                   ),
             ),
-            const SizedBox(
-              width: 10,
-            ),
             Container(
                 alignment: Alignment.centerLeft,
-                width: 60,
+                margin: const EdgeInsets.only(left: 5),
+                width: 50,
                 height: 40,
-                child: Text(type,
+                child: Text(status.type,
                     style:
-                        const TextStyle(fontSize: 16, color: Colors.black87)))
+                        const TextStyle(fontSize: 14, color: Colors.black87)))
           ],
+        ),
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text("${status.count.floor()}",
+                  style: const TextStyle(fontSize: 14, color: Colors.black87)),
+              const SizedBox(width: 10),
+              Text(status.percentage,
+                  style: const TextStyle(fontSize: 14, color: Color(0xFF607D8B))),
+              const SizedBox(width: 16)
+            ],
+          ),
         ),
       ],
     );

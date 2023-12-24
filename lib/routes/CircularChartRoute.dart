@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:circular_chart_flutter/circular_chart_flutter.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+class CircularChartRoute extends StatefulWidget {
+  const CircularChartRoute({Key? key}) : super(key: key);
 
   @override
   _CircularChart createState() => _CircularChart();
 }
-class _CircularChart extends State<MyHomePage> {
+
+class _CircularChart extends State<CircularChartRoute> {
   final String _hot = 'Hot';
   final String _warm = 'Warm';
   final String _cold = 'Cold ';
@@ -161,7 +161,7 @@ class _CircularChart extends State<MyHomePage> {
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: color // Color of the circular shape
-              ),
+                  ),
             ),
             const SizedBox(
               width: 10,
@@ -171,7 +171,8 @@ class _CircularChart extends State<MyHomePage> {
                 width: 60,
                 height: 40,
                 child: Text(type,
-                    style: const TextStyle(fontSize: 16, color: Colors.black87)))
+                    style:
+                        const TextStyle(fontSize: 16, color: Colors.black87)))
           ],
         ),
       ],

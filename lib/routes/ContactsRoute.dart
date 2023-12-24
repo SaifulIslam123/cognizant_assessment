@@ -1,6 +1,9 @@
 import 'package:cognizant_assessment/model/Contact.dart';
+import 'package:cognizant_assessment/routes/CircularChartRoute.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import '../bloc/ContactsBloc.dart';
 
 class ContactsRoute extends StatelessWidget {
@@ -99,63 +102,58 @@ class ContactWidget extends StatelessWidget {
             itemCount: contactItems.length,
             itemBuilder: (BuildContext context, int index) {
               return Card(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.all(16),
-                      width: 50,
-                      height: 50,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.pinkAccent),
-                      child: Text(
-                        contactItems[index].name.substring(0, 2).toUpperCase(),
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.only(
-                            left: 2, right: 16, top: 16, bottom: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              contactItems[index].name,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Colors.black87,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              contactItems[index].email,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Colors.black38,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold),
-                            )
-                          ],
+                child:InkWell(
+                  onTap: (){Get.to(CircularChartRoute());},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.all(16),
+                        width: 50,
+                        height: 50,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.pinkAccent),
+                        child: Text(
+                          contactItems[index].name.substring(0, 2).toUpperCase(),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                       ),
-                    )
-                  ],
+                      Expanded(
+                        child: Container(
+                          margin: const EdgeInsets.only(
+                              left: 2, right: 16, top: 16, bottom: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                contactItems[index].name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                contactItems[index].email,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Colors.black38,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               );
             }));
   }
 }
-
-/*
-BlocBuilder<TextBloc, TextState>(builder: (context, state) {
-if(state is TextUpdatedState){
-contactItems = totalContactItems
-    .where((item) => item.name.toLowerCase().contains(state.newText.toLowerCase()))
-    .toList();
-}*/

@@ -2,7 +2,7 @@ import 'package:cognizant_assessment/network/AppApiClient.dart';
 import 'package:cognizant_assessment/network/BaseDataSource.dart';
 
 import '../model/Contact.dart';
-import '../network/AppUrls.dart';
+import '../network/ApiUrls.dart';
 import '../network/Result.dart';
 
 class ContactRepository extends BaseDataSource {

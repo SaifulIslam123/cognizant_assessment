@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-import 'AppUrls.dart';
+import 'ApiUrls.dart';
 
 
 enum HttpMethod { POST, GET, PUT, DELETE, PATCH }

@@ -10,16 +10,13 @@ import 'CustomWidgetChartRoute.dart';
 class ContactsRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider<ContactsBloc>(
-            create: (context) => ContactsBloc(),
-          )
-        ],
+    return SafeArea(
+        child: Scaffold(
+      body: BlocProvider<ContactsBloc>(
+        create: (context) => ContactsBloc(),
         child: ContactWidget(),
       ),
-    );
+    ));
   }
 }
 
@@ -36,35 +33,32 @@ class ContactWidget extends StatelessWidget {
 
     if (_contactItems.isEmpty) _contactBloc.add(FetchContactsEvent());
 
-    return Scaffold(
-        body: SafeArea(
-      child: Container(
-        height: _mediaQuery.size.height,
-        width: _mediaQuery.size.width,
-        color: const Color(0xFFEFEBE9),
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            _showSearchTextField(),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Container(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Contacts',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color(titleTextColor),
-                      fontSize: 22),
-                ),
+    return Container(
+      height: _mediaQuery.size.height,
+      width: _mediaQuery.size.width,
+      color: const Color(0xFFEFEBE9),
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          _showSearchTextField(),
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: Container(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Contacts',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(titleTextColor),
+                    fontSize: 22),
               ),
             ),
-            const SizedBox(height: 16),
-            _prepareContactBlocBuilder(),
-          ],
-        ),
+          ),
+          const SizedBox(height: 16),
+          _prepareContactBlocBuilder(),
+        ],
       ),
-    ));
+    );
   }
 
   Widget _showSearchTextField() {

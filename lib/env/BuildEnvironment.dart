@@ -7,7 +7,7 @@ class BuildEnvironment {
 
   late String contactsUrl;
 
-  late String env;
+  late String type;
 
   static void setEnvironment(Environment env) {
     switch (env) {
@@ -25,7 +25,7 @@ class DevEnvironment extends BuildEnvironment {
   DevEnvironment() {
     baseUrl = "https://mocki.io";
     contactsUrl = "/v1/b0678e55-caaa-4a80-9c56-8113ecd43303";
-    env = "dev";
+    type = "dev";
   }
 }
 
@@ -33,6 +33,6 @@ class ProdEnvironment extends BuildEnvironment {
   ProdEnvironment() {
     baseUrl = "https://cognizantv3.free.beeceptor.com";
     contactsUrl = "/contacts";
-    env = "prod";
+    type = "prod";
   }
 }

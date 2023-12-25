@@ -1,4 +1,4 @@
-import 'package:cognizant_assessment/routes/LoginRoute.dart';
+import 'package:cognizant_assessment/ui/routes/LoginRoute.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

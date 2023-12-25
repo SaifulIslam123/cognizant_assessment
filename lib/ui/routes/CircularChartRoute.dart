@@ -49,7 +49,7 @@ class _CircularChart extends State<CircularChartRoute> {
                         child: Text(
                           'Prospect by Status',
                           style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Colors.black87),
                         ),

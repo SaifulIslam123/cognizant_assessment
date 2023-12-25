@@ -1,8 +1,8 @@
-import 'package:cognizant_assessment/routes/ContactsRoute.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'CircularChartRoute.dart';
+import 'ContactsRoute.dart';
 
 class LoginRoute extends StatefulWidget {
   const LoginRoute({super.key});

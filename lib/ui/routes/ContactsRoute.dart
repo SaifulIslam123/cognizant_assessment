@@ -1,10 +1,11 @@
 import 'package:cognizant_assessment/model/Contact.dart';
-import 'package:cognizant_assessment/routes/CircularChartRoute.dart';
+import 'package:cognizant_assessment/ui/components/ErrorMessageText.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import '../bloc/ContactsBloc.dart';
+import '../../bloc/ContactsBloc.dart';
+import '../components/LoadingText.dart';
+import 'CircularChartRoute.dart';
 
 class ContactsRoute extends StatelessWidget {
   @override
@@ -90,10 +91,10 @@ class ContactWidget extends StatelessWidget {
             itemCount: _contactItems.length,
             itemBuilder: (BuildContext context, int index) {
               return Card(
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
                 child: InkWell(
                   onTap: () {
                     Get.to(CircularChartRoute());
@@ -158,9 +159,7 @@ class ContactWidget extends StatelessWidget {
     return BlocBuilder<ContactsBloc, ContactsState>(
       builder: (context, state) {
         if (state is LoadingContactsState) {
-          return const Center(
-              child: Text('Loading...',
-                  style: TextStyle(fontSize: 18, color: Colors.black87)));
+          return Center(child: loadingTextWidget('Loading...'));
         } else if (state is LoadedContactsState) {
           if (state.searchContactList.isNotEmpty) {
             _contactItems = state.searchContactList;
@@ -169,9 +168,7 @@ class ContactWidget extends StatelessWidget {
           }
           return _showContactListWidget(context);
         } else if (state is ErrorContactsState) {
-          return Center(
-              child: Text(state.error,
-                  style: const TextStyle(fontSize: 16, color: Colors.black87)));
+          return Center(child: errorMessageText(state.error));
         } else {
           return const Text('');
         }

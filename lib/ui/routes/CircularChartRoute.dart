@@ -17,6 +17,8 @@ class _CircularChart extends State<CircularChartRoute> {
   final MaterialAccentColor _hotColor = Colors.redAccent;
   final MaterialAccentColor _warmColor = Colors.orangeAccent;
   final MaterialAccentColor _coldColor = Colors.blueAccent;
+  final _titleTextColor = const Color(0xFF171725);
+  final _shadowGreyTextColor = const Color(0xFF9EA1BC);
 
   @override
   Widget build(BuildContext context) {
@@ -42,16 +44,16 @@ class _CircularChart extends State<CircularChartRoute> {
               ),
               child: Column(
                 children: [
-                  const Align(
+                  Align(
                       alignment: Alignment.topLeft,
                       child: Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: Text(
                           'Prospect by Status',
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black87),
+                              color: _titleTextColor),
                         ),
                       )),
                   Expanded(
@@ -67,7 +69,7 @@ class _CircularChart extends State<CircularChartRoute> {
                                     alignment: Alignment.center,
                                     child: _circularPieChart(),
                                   ),
-                                  const Positioned(
+                                  Positioned(
                                       top: 0,
                                       bottom: 0,
                                       left: 0,
@@ -83,13 +85,13 @@ class _CircularChart extends State<CircularChartRoute> {
                                             style: TextStyle(
                                                 fontSize: 22,
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.black87),
+                                                color: _titleTextColor),
                                           ),
                                           Text('Total Prospects',
                                               style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF607D8B)))
+                                                  color: _shadowGreyTextColor))
                                         ],
                                       ))
                                 ],
@@ -179,8 +181,7 @@ class _CircularChart extends State<CircularChartRoute> {
                 width: 50,
                 height: 40,
                 child: Text(status.type,
-                    style:
-                        const TextStyle(fontSize: 14, color: Colors.black87)))
+                    style: TextStyle(fontSize: 14, color: _titleTextColor)))
           ],
         ),
         Expanded(
@@ -188,11 +189,10 @@ class _CircularChart extends State<CircularChartRoute> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text("${status.count.floor()}",
-                  style: const TextStyle(fontSize: 14, color: Colors.black87)),
+                  style: TextStyle(fontSize: 14, color: _titleTextColor)),
               const SizedBox(width: 10),
               Text(status.percentage,
-                  style:
-                      const TextStyle(fontSize: 14, color: Color(0xFF607D8B))),
+                  style: TextStyle(fontSize: 14, color: _shadowGreyTextColor)),
               const SizedBox(width: 16)
             ],
           ),

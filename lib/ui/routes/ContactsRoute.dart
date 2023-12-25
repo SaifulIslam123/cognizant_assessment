@@ -27,6 +27,7 @@ class ContactWidget extends StatelessWidget {
   var _contactItems = <Data>[];
   late MediaQueryData _mediaQuery;
   late ContactsBloc _contactBloc;
+  final titleTextColor = 0xFF434343;
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +50,11 @@ class ContactWidget extends StatelessWidget {
               padding: const EdgeInsets.only(top: 20),
               child: Container(
                 alignment: Alignment.topLeft,
-                child: const Text(
+                child: Text(
                   'Contacts',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: Color(titleTextColor),
                       fontSize: 22),
                 ),
               ),
@@ -69,17 +70,23 @@ class ContactWidget extends StatelessWidget {
   Widget _showSearchTextField() {
     return Padding(
       padding: const EdgeInsets.only(top: 16, bottom: 16),
-      child: TextField(
-        onChanged: (value) {
-          _contactBloc.add(SearchTextChangedEvent(value));
-        },
-        // controller: editingController,
-        decoration: const InputDecoration(
-            labelText: "Search",
-            hintText: "Search",
-            prefixIcon: Icon(Icons.search),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(16.0)))),
+      child: Container(
+        height: 45,
+        child: TextField(
+          onChanged: (value) {
+            _contactBloc.add(SearchTextChangedEvent(value));
+          },
+          // controller: editingController,
+          decoration: const InputDecoration(
+              contentPadding: EdgeInsets.zero,
+              filled: true,
+              fillColor: Color(0xFFE8F4F6),
+              hintText: "Search",
+              prefixIcon: Icon(Icons.search),
+              border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.all(Radius.circular(16.0)))),
+        ),
       ),
     );
   }
@@ -109,7 +116,7 @@ class ContactWidget extends StatelessWidget {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
-                            color: Colors.pinkAccent),
+                            color: const Color(0xFFFFADAE)),
                         child: Text(
                           _contactItems[index]
                               .name
@@ -130,8 +137,8 @@ class ContactWidget extends StatelessWidget {
                                 _contactItems[index].name,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                    color: Colors.black87,
+                                style: TextStyle(
+                                    color: Color(titleTextColor),
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -140,7 +147,7 @@ class ContactWidget extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
-                                    color: Colors.black38,
+                                    color: Color(0xFF868686),
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold),
                               )

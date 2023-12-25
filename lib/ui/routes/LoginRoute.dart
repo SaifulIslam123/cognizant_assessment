@@ -16,7 +16,9 @@ class _LoginState extends State<LoginRoute> {
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isObscure = true;
-  final _backgroundColor = 0x6084FFFF;
+  final _backgroundColor = 0xFFCAEEFE;
+  final _screenMargin = 22.0;
+  final _labelColor = 0xFF8C969F;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +63,8 @@ class _LoginState extends State<LoginRoute> {
                     ),
                   ),
                   height: 200.0,
-                  margin: const EdgeInsets.only(left: 16, right: 16),
+                  margin: EdgeInsets.only(
+                      left: _screenMargin, right: _screenMargin),
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.all(16),
@@ -77,7 +80,7 @@ class _LoginState extends State<LoginRoute> {
     return Expanded(
         flex: 60,
         child: Container(
-          margin: const EdgeInsets.all(16),
+          margin: EdgeInsets.all(_screenMargin),
           alignment: Alignment.topLeft,
           child: Form(
             key: _formKey,
@@ -86,7 +89,10 @@ class _LoginState extends State<LoginRoute> {
               children: [
                 const Text(
                   'Welcome To Flutter',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                      color: Color(0xFF434343)),
                 ),
                 const SizedBox(height: 5),
                 const Text(
@@ -94,42 +100,42 @@ class _LoginState extends State<LoginRoute> {
                   style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 16,
-                      color: Colors.grey),
+                      color: Color(0xFF8C969F)),
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _userNameController,
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    hintText: 'User Name',
-                  ),
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      hintText: 'User Name',
+                      hintStyle: TextStyle(color: Color(_labelColor))),
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  obscureText: _isObscure,
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _isObscure = !_isObscure;
-                            });
-                          },
-                          icon: Icon(_isObscure
-                              ? Icons.visibility
-                              : Icons.visibility_off)),
-                      filled: true,
-                      fillColor: Colors.white,
-                      hintText: 'Password'),
-                ),
+                    obscureText: _isObscure,
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _isObscure = !_isObscure;
+                              });
+                            },
+                            icon: Icon(_isObscure
+                                ? Icons.visibility
+                                : Icons.visibility_off)),
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: 'Password',
+                        hintStyle: TextStyle(color: Color(_labelColor)))),
                 const SizedBox(height: 5),
                 const Align(
                     alignment: Alignment.topRight,
                     child: Text('Forgot Password?',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF00B8D4)))),
+                            color: Color(0xFF26C0F9)))),
                 const SizedBox(height: 30),
                 SizedBox(
                   width: double.infinity,
@@ -138,7 +144,7 @@ class _LoginState extends State<LoginRoute> {
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(2.0)),
-                        backgroundColor: Color(0xFF4FC3F7)),
+                        backgroundColor: const Color(0xFF79D7FB)),
                     child: const Text(
                       'Login',
                       style: TextStyle(fontSize: 18, color: Colors.white),

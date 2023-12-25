@@ -23,42 +23,29 @@ class ContactsRoute extends StatelessWidget {
 }
 
 class ContactWidget extends StatelessWidget {
-  var contactItems = <Data>[];
+  var _contactItems = <Data>[];
+  late MediaQueryData _mediaQuery;
+  late ContactsBloc _contactBloc;
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final contactBloc = BlocProvider.of<ContactsBloc>(context);
+    _mediaQuery = MediaQuery.of(context);
+    _contactBloc = BlocProvider.of<ContactsBloc>(context);
 
-    if (contactItems.isEmpty) contactBloc.add(FetchContactsEvent());
+    if (_contactItems.isEmpty) _contactBloc.add(FetchContactsEvent());
 
-    print("widgetbuild");
     return Scaffold(
         body: SafeArea(
       child: Container(
-        height: mediaQuery.size.height,
-        width: mediaQuery.size.width,
+        height: _mediaQuery.size.height,
+        width: _mediaQuery.size.width,
         color: const Color(0xFFEFEBE9),
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
+            _showSearchTextField(),
             Padding(
-              padding: const EdgeInsets.only(top: 16, bottom: 16),
-              child: TextField(
-                onChanged: (value) {
-                  contactBloc.add(SearchTextChangedEvent(value));
-                },
-                // controller: editingController,
-                decoration: const InputDecoration(
-                    labelText: "Search",
-                    hintText: "Search",
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(16.0)))),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.only(top: 20),
               child: Container(
                 alignment: Alignment.topLeft,
                 child: const Text(
@@ -71,39 +58,46 @@ class ContactWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            BlocBuilder<ContactsBloc, ContactsState>(
-              builder: (context, state) {
-                if (state is LoadingContactsState) {
-                  return const Center(child: Text('Loading...'));
-                } else if (state is LoadedContactsState) {
-                  if (state.searchContactList.isNotEmpty) {
-                    contactItems = state.searchContactList;
-                  } else {
-                    contactItems = state.contactList;
-                  }
-                  return _showContactListWidget(context);
-                } else if (state is ErrorContactsState) {
-                  return Center(child: Text('${state.error}'));
-                } else {
-                  return const Text('');
-                }
-              },
-            ),
+            _prepareContactBlocBuilder(),
           ],
         ),
       ),
     ));
   }
 
+  Widget _showSearchTextField() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16, bottom: 16),
+      child: TextField(
+        onChanged: (value) {
+          _contactBloc.add(SearchTextChangedEvent(value));
+        },
+        // controller: editingController,
+        decoration: const InputDecoration(
+            labelText: "Search",
+            hintText: "Search",
+            prefixIcon: Icon(Icons.search),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16.0)))),
+      ),
+    );
+  }
+
   Widget _showContactListWidget(BuildContext context) {
     return Expanded(
         child: ListView.builder(
             shrinkWrap: true,
-            itemCount: contactItems.length,
+            itemCount: _contactItems.length,
             itemBuilder: (BuildContext context, int index) {
               return Card(
-                child:InkWell(
-                  onTap: (){Get.to(CircularChartRoute());},
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                child: InkWell(
+                  onTap: () {
+                    Get.to(CircularChartRoute());
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -116,7 +110,10 @@ class ContactWidget extends StatelessWidget {
                             borderRadius: BorderRadius.circular(30),
                             color: Colors.pinkAccent),
                         child: Text(
-                          contactItems[index].name.substring(0, 2).toUpperCase(),
+                          _contactItems[index]
+                              .name
+                              .substring(0, 2)
+                              .toUpperCase(),
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.white),
                         ),
@@ -129,19 +126,19 @@ class ContactWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                contactItems[index].name,
+                                _contactItems[index].name,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.black87,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                contactItems[index].email,
+                                _contactItems[index].email,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.black38,
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold),
@@ -155,5 +152,30 @@ class ContactWidget extends StatelessWidget {
                 ),
               );
             }));
+  }
+
+  BlocBuilder _prepareContactBlocBuilder() {
+    return BlocBuilder<ContactsBloc, ContactsState>(
+      builder: (context, state) {
+        if (state is LoadingContactsState) {
+          return const Center(
+              child: Text('Loading...',
+                  style: TextStyle(fontSize: 18, color: Colors.black87)));
+        } else if (state is LoadedContactsState) {
+          if (state.searchContactList.isNotEmpty) {
+            _contactItems = state.searchContactList;
+          } else {
+            _contactItems = state.contactList;
+          }
+          return _showContactListWidget(context);
+        } else if (state is ErrorContactsState) {
+          return Center(
+              child: Text(state.error,
+                  style: const TextStyle(fontSize: 16, color: Colors.black87)));
+        } else {
+          return const Text('');
+        }
+      },
+    );
   }
 }

@@ -36,6 +36,10 @@ class _CircularChart extends State<CircularChartRoute> {
             height: 270,
             width: double.infinity,
             child: Card(
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
               child: Column(
                 children: [
                   const Align(
@@ -69,7 +73,8 @@ class _CircularChart extends State<CircularChartRoute> {
                                       left: 0,
                                       right: 0,
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
@@ -186,7 +191,8 @@ class _CircularChart extends State<CircularChartRoute> {
                   style: const TextStyle(fontSize: 14, color: Colors.black87)),
               const SizedBox(width: 10),
               Text(status.percentage,
-                  style: const TextStyle(fontSize: 14, color: Color(0xFF607D8B))),
+                  style:
+                      const TextStyle(fontSize: 14, color: Color(0xFF607D8B))),
               const SizedBox(width: 16)
             ],
           ),

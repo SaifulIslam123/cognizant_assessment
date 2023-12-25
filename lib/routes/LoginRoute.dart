@@ -39,10 +39,7 @@ class _LoginState extends State<LoginRoute> {
                 Colors.white
               ])),
           child: Column(
-            children: [
-              _showLogo(),
-              _showLoginFields()
-            ],
+            children: [_showLogo(), _showLoginFields()],
           ),
         ),
       ),
@@ -65,7 +62,12 @@ class _LoginState extends State<LoginRoute> {
                   ),
                   height: 200.0,
                   margin: const EdgeInsets.only(left: 16, right: 16),
-                  child: const Center()),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Image.asset('assets/images/icons_flutter_240.png'),
+                    ),
+                  )),
             ),
           ],
         ));
@@ -142,7 +144,7 @@ class _LoginState extends State<LoginRoute> {
                       style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
                     onPressed: () {
-                      Get.to(CircularChartRoute());
+                      Get.to(ContactsRoute());
                     },
                   ),
                 )

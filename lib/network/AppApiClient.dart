@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-const String BASE_URL = "https://cognizantv2.free.beeceptor.com";
+import 'AppUrls.dart';
+
 
 enum HttpMethod { POST, GET, PUT, DELETE, PATCH }
 

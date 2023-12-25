@@ -2,14 +2,14 @@ import 'package:cognizant_assessment/model/ProspectStatus.dart';
 import 'package:flutter/material.dart';
 import 'package:circular_chart_flutter/circular_chart_flutter.dart';
 
-class CircularChartRoute extends StatefulWidget {
-  const CircularChartRoute({Key? key}) : super(key: key);
+class CustomChartRoute extends StatefulWidget {
+  const CustomChartRoute({Key? key}) : super(key: key);
 
   @override
-  _CircularChart createState() => _CircularChart();
+  _CustomChart createState() => _CustomChart();
 }
 
-class _CircularChart extends State<CircularChartRoute> {
+class _CustomChart extends State<CustomChartRoute> {
   final _hot = ProspectStatus('Hot', 35, '25%');
   final _warm = ProspectStatus('Warm', 35, '25%');
   final _cold = ProspectStatus('Cold', 90, '50%');
@@ -67,7 +67,7 @@ class _CircularChart extends State<CircularChartRoute> {
                                 children: [
                                   Align(
                                     alignment: Alignment.center,
-                                    child: _circularPieChart(),
+                                    child: _customChart(),
                                   ),
                                   Positioned(
                                       top: 0,
@@ -120,7 +120,7 @@ class _CircularChart extends State<CircularChartRoute> {
     );
   }
 
-  Widget _circularPieChart() {
+  Widget _customChart() {
     final GlobalKey<AnimatedCircularChartState> _chartKey =
         GlobalKey<AnimatedCircularChartState>();
     return AnimatedCircularChart(

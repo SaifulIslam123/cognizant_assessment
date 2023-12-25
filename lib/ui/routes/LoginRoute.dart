@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'CircularChartRoute.dart';
+import 'CustomWidgetChartRoute.dart';
 import 'ContactsRoute.dart';
 
 class LoginRoute extends StatefulWidget {

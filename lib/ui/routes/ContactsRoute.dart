@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import '../../bloc/ContactsBloc.dart';
 import '../components/LoadingText.dart';
-import 'CircularChartRoute.dart';
+import 'CustomWidgetChartRoute.dart';
 
 class ContactsRoute extends StatelessWidget {
   @override
@@ -104,7 +104,7 @@ class ContactWidget extends StatelessWidget {
                 ),
                 child: InkWell(
                   onTap: () {
-                    Get.to(CircularChartRoute());
+                    Get.to(CustomChartRoute());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,

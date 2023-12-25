@@ -1,8 +1,7 @@
 import 'package:cognizant_assessment/network/AppApiClient.dart';
 import 'package:cognizant_assessment/network/BaseDataSource.dart';
-
+import '../env/BuildEnvironment.dart';
 import '../model/Contact.dart';
-import '../network/ApiUrls.dart';
 import '../network/Result.dart';
 
 class ContactRepository extends BaseDataSource {
@@ -13,11 +12,9 @@ class ContactRepository extends BaseDataSource {
   Future<Result> getContactList() async {
     return executeApiRequest(
         apiClient.dio,
-        CONTACT,
+        BuildEnvironment.environment.contactsUrl,
         HttpMethod.GET,
         null,
         contactFromJson);
   }
 }
-
-

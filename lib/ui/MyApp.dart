@@ -2,9 +2,9 @@ import 'package:cognizant_assessment/ui/routes/LoginRoute.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void main() {
+/*void main() {
   runApp(const GetMaterialApp(home: MyApp(),));
-}
+}*/
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

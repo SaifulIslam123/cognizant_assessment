@@ -1,8 +1,6 @@
+import 'package:cognizant_assessment/env/BuildEnvironment.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-
-import 'ApiUrls.dart';
-
 
 enum HttpMethod { POST, GET, PUT, DELETE, PATCH }
 
@@ -16,7 +14,7 @@ class AppApiClient {
   factory AppApiClient() => _singleton;
 
   static Dio createDio() {
-    var dio = Dio(BaseOptions(baseUrl: BASE_URL));
+    var dio = Dio(BaseOptions(baseUrl: BuildEnvironment.environment.baseUrl));
     return dio;
   }
 

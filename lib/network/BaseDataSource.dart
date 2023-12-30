@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'AppApiClient.dart';
+import 'ApiClient.dart';
 import 'Result.dart';
 
 abstract class BaseDataSource {
@@ -29,12 +29,12 @@ abstract class BaseDataSource {
       if (e.response?.statusCode == 401) {
         return Result.error(e.message, e.response?.statusCode ?? -1);
       } else {
-        AppApiClient.logPrint("DioError: $e");
+        debugPrint("DioError: $e");
         return Result.error(e.message, e.response?.statusCode ?? -1);
       }
     } catch (error, stacktrace) {
       final errorMessage = error.toString().substring(11);
-      AppApiClient.logPrint("$errorMessage:  $error stackTrace: $stacktrace");
+      debugPrint("$errorMessage:  $error stackTrace: $stacktrace");
       return Result.error(errorMessage, -1);
     }
   }

@@ -5,6 +5,8 @@ import '../network/Result.dart' as Result;
 
 abstract class ContactsEvent {}
 
+abstract class ContactsState {}
+
 class SearchTextChangedEvent extends ContactsEvent {
   final String newText;
 
@@ -19,9 +21,7 @@ class SearchTextChangedState extends ContactsState {
 
 class FetchContactsEvent extends ContactsEvent {}
 
-abstract class ContactsState {}
-
-class InitailContactsState extends ContactsState {}
+class InitialContactsState extends ContactsState {}
 
 class LoadingContactsState extends ContactsState {}
 
@@ -41,7 +41,7 @@ class ErrorContactsState extends ContactsState {
 class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
   final ContactRepository _repository = ContactRepository();
 
-  ContactsBloc() : super(InitailContactsState()) {
+  ContactsBloc() : super(InitialContactsState()) {
     on<FetchContactsEvent>((event, emit) async {
       emit(LoadingContactsState());
       try {
@@ -57,7 +57,7 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
           emit(ErrorContactsState(response.message ?? ""));
         }
       } catch (e) {
-        emit(ErrorContactsState('Failed to load data. Error: $e'));
+        emit(ErrorContactsState('Failed to load data. $e'));
       }
     });
     on<SearchTextChangedEvent>((event, emit) async {

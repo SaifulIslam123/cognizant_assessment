@@ -98,7 +98,7 @@ class ContactWidget extends StatelessWidget {
                 ),
                 child: InkWell(
                   onTap: () {
-                    Get.to(CustomChartRoute());
+                    Get.to(() => CustomChartRoute());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,

@@ -150,7 +150,7 @@ class _LoginState extends State<LoginRoute> {
                       style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
                     onPressed: () {
-                      Get.to(ContactsRoute());
+                      Get.to(() => ContactsRoute());
                     },
                   ),
                 )

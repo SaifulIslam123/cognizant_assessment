@@ -25,17 +25,17 @@ abstract class BaseDataSource {
       } else {
         return Result.error(apiErrorMessage, response.statusCode ?? -1);
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
-        return Result.error(apiErrorMessage, e.response?.statusCode ?? -1);
+        return Result.error(e.message, e.response?.statusCode ?? -1);
       } else {
         AppApiClient.logPrint("DioError: $e");
-        return Result.error(apiErrorMessage, e.response?.statusCode ?? -1);
+        return Result.error(e.message, e.response?.statusCode ?? -1);
       }
     } catch (error, stacktrace) {
-      AppApiClient.logPrint(
-          "$apiErrorMessage:  $error stackTrace: $stacktrace");
-      return Result.error(apiErrorMessage, -1);
+      final errorMessage = error.toString().substring(11);
+      AppApiClient.logPrint("$errorMessage:  $error stackTrace: $stacktrace");
+      return Result.error(errorMessage, -1);
     }
   }
 }

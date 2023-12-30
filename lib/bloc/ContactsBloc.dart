@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:cognizant_assessment/repository/ContactRepository.dart';
 import '../model/Contact.dart';
-import '../network/Result.dart';
+import '../network/Result.dart' as Result;
 
 abstract class ContactsEvent {}
 
@@ -41,37 +41,37 @@ class ErrorContactsState extends ContactsState {
 class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
   final ContactRepository _repository = ContactRepository();
 
-  ContactsBloc() : super(InitailContactsState());
-
-  @override
-  ContactsState get initialState => InitailContactsState();
-
-  @override
-  Stream<ContactsState> mapEventToState(ContactsEvent event) async* {
-    if (event is FetchContactsEvent) {
-      yield LoadingContactsState();
+  ContactsBloc() : super(InitailContactsState()) {
+    on<FetchContactsEvent>((event, emit) async {
+      emit(LoadingContactsState());
       try {
         final response = await _repository.getContactList();
-        Contact contact = response.data as Contact;
 
-        contact.data?.sort(
-            (a, b) => a.name.toUpperCase().compareTo(b.name.toUpperCase()));
-        yield LoadedContactsState(contact.data ?? [], []);
+        if (response.status == Result.Status.SUCCESS) {
+          Contact contact = response.data as Contact;
+
+          contact.data?.sort(
+              (a, b) => a.name.toUpperCase().compareTo(b.name.toUpperCase()));
+          emit(LoadedContactsState(contact.data ?? [], []));
+        } else if (response.status == Result.Status.ERROR) {
+          emit(ErrorContactsState(response.message ?? ""));
+        }
       } catch (e) {
-        yield ErrorContactsState('Failed to load data. Error: $e');
+        emit(ErrorContactsState('Failed to load data. Error: $e'));
       }
-    } else if (event is SearchTextChangedEvent) {
+    });
+    on<SearchTextChangedEvent>((event, emit) async {
       LoadedContactsState loadState = state as LoadedContactsState;
 
       if (event.newText.isEmpty) {
-        yield LoadedContactsState(loadState.contactList, []);
+        emit(LoadedContactsState(loadState.contactList, []));
       } else {
         List<Data> searchList = loadState.contactList
             .where((item) =>
                 item.name.toLowerCase().contains(event.newText.toLowerCase()))
             .toList();
-        yield LoadedContactsState(loadState.contactList, searchList);
+        emit(LoadedContactsState(loadState.contactList, searchList));
       }
-    }
+    });
   }
 }
